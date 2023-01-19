@@ -35,16 +35,15 @@ public class RankCommand extends Command {
 
                         for (Rank rank : Rank.values()) {
                             if (rank.name().equalsIgnoreCase(args[1])) {
-                                main.getPlayerManager().getPlayer(target.getUniqueId()).setRank(args[1].toUpperCase(), false);
                                 player.sendMessage(
                                         main.locale().msg("RANK_CHANGED_SENDER", new Object[]{target, args[1].toUpperCase()})
                                 );
-
                                 if (target.isOnline() && target != player) {
                                     target.getPlayer().sendMessage(
                                             main.locale().msg("RANK_CHANGED_SUBJECT", new Object[]{player, args[1].toUpperCase()})
                                     );
                                 }
+                                main.getPlayerManager().getPlayer(target.getUniqueId()).setRank(args[1].toUpperCase(), false);
                                 return;
                             }
                         }

@@ -1,6 +1,8 @@
 package com.cradle.starscape.listeners;
 
 import com.cradle.starscape.Main;
+import com.cradle.starscape.utils.ColorCode;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,9 +20,9 @@ public class ChatListener implements Listener {
         Player player = e.getPlayer();
         String name = main.getPlayerManager().getPlayer(player.getUniqueId()).getDisplayName();
         if (player.hasPermission("chat.colored")) {
-            e.setFormat(main.locale().msg("CHAT_FORMAT_COLORED", new String[]{name, e.getMessage()}));
+            e.setFormat(main.locale().msg("CHAT_FORMAT_COLORED", name) + " " + ColorCode.translate(e.getMessage()));
         } else {
-            e.setFormat(main.locale().msg("CHAT_FORMAT_DEFAULT", new String[]{name, e.getMessage()}));
+            e.setFormat(main.locale().msg("CHAT_FORMAT_DEFAULT", name) + " " + e.getMessage());
         }
     }
 }

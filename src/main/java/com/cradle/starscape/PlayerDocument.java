@@ -176,10 +176,18 @@ public class PlayerDocument {
             nickname = getNickname();
         }
         if (suffix == "") {
-            return prefix + nickname;
+            return "&r" + prefix + " " + rank.getNameColor() + nickname;
         } else {
-            return prefix + nickname + " " + suffix;
+            return "&r" + prefix + " " + rank.getNameColor() + nickname + " " + suffix;
         }
+    }
+    public String getNameSansTitles() {
+        String nickname = Bukkit.getOfflinePlayer(uuid).getName();
+        Rank rank = main.getPlayerManager().getPlayer(uuid).getRank();
+        if (getNickname() != null) {
+            nickname = getNickname();
+        }
+        return "&r" + rank.getNameColor() + nickname;
     }
 
     public Rank getRank() {

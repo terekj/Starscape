@@ -1,7 +1,7 @@
 package com.cradle.starscape.managers;
 
 import com.cradle.starscape.Main;
-import org.bukkit.ChatColor;
+import com.cradle.starscape.utils.ColorCode;
 import org.bukkit.OfflinePlayer;
 
 import java.io.File;
@@ -33,8 +33,7 @@ public class LocaleManager {
         }
     }
     public String msg(String msgKey) {
-
-        return ChatColor.translateAlternateColorCodes('&', locale.getString(msgKey));
+        return ColorCode.translate(locale.getString(msgKey));
     }
     public String msg(String msgKey, HashMap<String, String> translations) {
         Matcher m = PLACEHOLDER_PATTERN.matcher(locale.getString(msgKey));
@@ -46,7 +45,7 @@ public class LocaleManager {
             }
         }
         m.appendTail(sb);
-        return ChatColor.translateAlternateColorCodes('&', sb.toString());
+        return ColorCode.translate(sb.toString());
     }
     public String msg(String msgKey, String replacement) {
         Matcher m = PLACEHOLDER_PATTERN.matcher(locale.getString(msgKey));
@@ -55,7 +54,7 @@ public class LocaleManager {
             m.appendReplacement(sb, replacement);
         }
         m.appendTail(sb);
-        return ChatColor.translateAlternateColorCodes('&', sb.toString());
+        return ColorCode.translate(sb.toString());
 
     }
     public String msg(String msgKey, int replacement) {
