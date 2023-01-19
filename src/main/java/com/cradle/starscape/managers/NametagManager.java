@@ -17,7 +17,7 @@ public class NametagManager {
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         for (Rank rank : Rank.values()) {
             Team team = player.getScoreboard().registerNewTeam(getTeamName(rank));
-            if (rank.getTitles().length >= 1 && rank.getTitles()[0] != null) {team.setPrefix(rank.getTitles()[0]);}
+            if (rank.getTitles().length >= 1 && rank.getTitles()[0] != null) {team.setPrefix(rank.getTitles()[0] + " ");}
             if (rank.getTitles().length >= 2 && rank.getTitles()[1] != null) {team.setSuffix(rank.getTitles()[1]);}
         }
 

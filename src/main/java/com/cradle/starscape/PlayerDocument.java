@@ -1,5 +1,6 @@
 package com.cradle.starscape;
 
+import com.cradle.starscape.utils.ColorCode;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
@@ -18,7 +19,6 @@ public class PlayerDocument {
     private Document document;
 
     private final UUID uuid;
-    private String name;
     private String nickname;
     private String rank;
     private ArrayList<String> titles;
@@ -34,7 +34,7 @@ public class PlayerDocument {
     public PlayerDocument(Main main, UUID uuid) {
         this.main = main;
         this.uuid = uuid;
-        this.name = Bukkit.getOfflinePlayer(uuid).getName();
+        String name = Bukkit.getOfflinePlayer(uuid).getName();
 
         document = getDocument(uuid);
 
@@ -175,10 +175,10 @@ public class PlayerDocument {
         if (getNickname() != null) {
             nickname = getNickname();
         }
-        if (suffix == "") {
-            return "&r" + prefix + " " + rank.getNameColor() + nickname;
+        if (suffix.equals("")) {
+            return ColorCode.translate("&r" + prefix + " " + rank.getNameColor() + nickname);
         } else {
-            return "&r" + prefix + " " + rank.getNameColor() + nickname + " " + suffix;
+            return ColorCode.translate("&r" + prefix + " " + rank.getNameColor() + nickname + " " + suffix);
         }
     }
     public String getNameSansTitles() {
@@ -187,7 +187,7 @@ public class PlayerDocument {
         if (getNickname() != null) {
             nickname = getNickname();
         }
-        return "&r" + rank.getNameColor() + nickname;
+        return ColorCode.translate("&r" + rank.getNameColor() + nickname);
     }
 
     public Rank getRank() {

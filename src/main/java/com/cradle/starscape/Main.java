@@ -55,11 +55,8 @@ public final class Main extends JavaPlugin {
     public Database getDatabase() {
         return database;
     }
-
     public PlayerManager getPlayerManager() { return playerManager; }
-
     public NametagManager getNametagManager() {return nametagManager;}
-
     public LocaleManager locale() {return localeManager;}
 
     public HashMap<UUID, PermissionAttachment> getPerms() {return perms;}

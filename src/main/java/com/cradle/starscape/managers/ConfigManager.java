@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class    ConfigManager {
+public class ConfigManager {
     private static FileConfiguration config;
 
     public static void setupConfig(Main main) {

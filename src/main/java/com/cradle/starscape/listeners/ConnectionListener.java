@@ -2,8 +2,6 @@ package com.cradle.starscape.listeners;
 
 import com.cradle.starscape.Main;
 import com.cradle.starscape.PlayerDocument;
-import com.cradle.starscape.Rank;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +9,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.permissions.PermissionAttachment;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 public class ConnectionListener implements Listener {

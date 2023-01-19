@@ -2,7 +2,6 @@ package com.cradle.starscape.listeners;
 
 import com.cradle.starscape.Main;
 import com.cradle.starscape.utils.ColorCode;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

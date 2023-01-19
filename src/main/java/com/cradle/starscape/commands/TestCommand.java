@@ -1,10 +1,7 @@
 package com.cradle.starscape.commands;
 
 import com.cradle.starscape.Main;
-import com.cradle.starscape.PlayerDocument;
 import com.cradle.starscape.managers.Command;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,7 +20,8 @@ public class TestCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
-            ((Player) sender).sendMessage("hi :)");
+            Player player = (Player) sender;
+            player.sendMessage(main.getPlayerManager().getPlayer(player.getUniqueId()).getNameSansTitles());
         }
     }
 
