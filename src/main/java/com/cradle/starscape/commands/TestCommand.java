@@ -13,7 +13,7 @@ public class TestCommand extends Command {
         super(
                 "test",
                 new String[]{},
-                "Test command for plugin",
+                "Test command fhi theoor plugin",
                 "");
         this.main = main;
     }
