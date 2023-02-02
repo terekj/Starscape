@@ -1,0 +1,7 @@
+name: Starscape
+version: '${project.version}'
+main: com.cradle.starscape.Main
+api-version: 1.19
+prefix: [ STARSCAPE ]
+authors: [ subquatic, tofuwy ]
+description: Starscape - Adventure calls.
