@@ -80,8 +80,7 @@ public class PlayerDocument {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
-        Document newValue = new Document().append("nickname", nickname);
-        Document update = new Document("$set", newValue);
+        Document update = new Document("$set", new Document().append("nickname", nickname));
         main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
     }
 
@@ -111,8 +110,10 @@ public class PlayerDocument {
 
 
         this.rank = rank.toUpperCase();
-        Document newValue = new Document().append("rank", rank);
-        Document update = new Document("$set", newValue);
+        Document update = new Document(
+                "$set",
+                new Document().append("rank", rank)
+                );
         main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
 
         if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
@@ -125,29 +126,36 @@ public class PlayerDocument {
     public void setTitles(String prefix, String suffix) {
         titles.set(0, prefix);
         titles.set(1, suffix);
-        Document newValues = new Document().append("titles", titles);
-        Document update = new Document("$set", newValues);
+        Document update = new Document(
+                "$set",
+                new Document().append("titles", titles)
+        );
         main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
     }
 
     public void setXP(int xp) {
         this.xp = xp;
-        Document newValue = new Document().append("xp", xp);
-        Document update = new Document("$set", newValue);
+        Document update = new Document(
+                "$set",
+                new Document().append("xp", xp));
         main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
     }
 
     public void setLevel(int level) {
         this.level = level;
-        Document newValue = new Document().append("level", level);
-        Document update = new Document("$set", newValue);
+        Document update = new Document(
+                "$set",
+                new Document().append("level", level)
+        );
         main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
     }
 
     public void setBalance(double balance) {
         this.balance = balance;
-        Document newValue = new Document().append("balance", balance);
-        Document update = new Document("$set", newValue);
+        Document update = new Document(
+                "$set",
+                new Document().append("balance", balance)
+        );
         main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
     }
 

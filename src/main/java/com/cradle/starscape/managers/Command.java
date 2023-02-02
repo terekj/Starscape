@@ -1,7 +1,6 @@
 package com.cradle.starscape.managers;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -13,18 +12,18 @@ import java.util.List;
 public abstract class Command extends BukkitCommand {
 
     public Command(String command, String[] aliases, String description, String permission) {
-        super(command);
-
+        super(command, description, "Starscape command.", Arrays.asList(aliases));
+/*
         this.setAliases(Arrays.asList(aliases));
         this.setDescription(description);
         this.setPermission(permission);
         this.setPermissionMessage(ChatColor.RED + "You cannot do this!");
-
+*/
         try {
             Field field = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             field.setAccessible(true);
             CommandMap map = (CommandMap) field.get(Bukkit.getServer());
-            map.register(command, this);
+            map.register("starscape", this);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
