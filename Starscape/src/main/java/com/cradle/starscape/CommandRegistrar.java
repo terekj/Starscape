@@ -22,6 +22,8 @@ public class CommandRegistrar {
         new RankCommand(this.main);
         new GamemodeCommand(this.main);
         new PunishCommand(this.main);
+        new TestCommand(this.main);
+        new WarpCommand(this.main);
 
         aliasMap = new HashMap<>();
         aliasMap.put("/kick", "punish kick");

@@ -1,6 +1,7 @@
 package com.cradle.starscape;
 
 import com.cradle.starscape.utils.ColorCode;
+import com.cradle.starscape.utils.PunishmentLog;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
@@ -8,10 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerDocument {
 
@@ -36,7 +34,7 @@ public class PlayerDocument {
         this.uuid = uuid;
         String name = Bukkit.getOfflinePlayer(uuid).getName();
 
-        document = getDocument(uuid);
+        document = getDocument();
 
         if (document != null) {
 
@@ -159,6 +157,15 @@ public class PlayerDocument {
         main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
     }
 
+    public void addToHistory(PunishmentLog punishment) {
+        punishmentHistory.add(punishment.toString());
+        Document update = new Document(
+                "$push",
+                new Document().append("punishmentHistory", punishment.toString())
+        );
+        main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
+    }
+
     public String getNickname() {
         return nickname;
     }
@@ -217,8 +224,11 @@ public class PlayerDocument {
     public double getBalance() {
         return balance;
     }
+    public List<String> getHistory() {
+        return punishmentHistory;
+    }
 
-    public Document getDocument(UUID uuid) {
+    public Document getDocument() {
         try (MongoCursor cursor = main.getDatabase().getPlayers().find(Filters.eq("uuid", uuid)).cursor()) {
             if (cursor.hasNext()) {
                 return (Document) cursor.next();

@@ -41,8 +41,8 @@ public class GamemodeCommand extends Command {
                 if (sender.hasPermission("starscape.gamemode.*") || sender.hasPermission("starscape.gamemode." + gamemode)) {
                     Player target = player;
                     if (args.length >= 2) {
-                        if (Bukkit.getPlayer(args[1]) == null) {
-                            player.sendMessage(main.locale().msg("PLAYER_NONEXISTENT"), args[1]);
+                        if (!Bukkit.getOfflinePlayer(args[1]).isOnline()) {
+                            player.sendMessage(main.locale().msg("PLAYER_OFFLINE"), args[1]);
                             return;
                         } else {
                             target = Bukkit.getPlayer(args[1]);

@@ -3,10 +3,8 @@ package com.cradle.starscape;
 import com.cradle.starscape.listeners.ChatListener;
 import com.cradle.starscape.listeners.CommandListener;
 import com.cradle.starscape.listeners.ConnectionListener;
-import com.cradle.starscape.managers.ConfigManager;
-import com.cradle.starscape.managers.LocaleManager;
-import com.cradle.starscape.managers.NametagManager;
-import com.cradle.starscape.managers.PlayerManager;
+import com.cradle.starscape.listeners.ResourcePackListener;
+import com.cradle.starscape.managers.*;
 import com.mongodb.MongoException;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.PermissionAttachment;
@@ -24,6 +22,8 @@ public final class Main extends JavaPlugin {
     private NametagManager nametagManager;
     private LocaleManager localeManager;
     private CommandRegistrar commandRegistrar;
+    private BanManager banManager;
+    private WarpManager warpManager;
 
     private HashMap<UUID, PermissionAttachment> perms = new HashMap<>();
 
@@ -44,10 +44,13 @@ public final class Main extends JavaPlugin {
         nametagManager = new NametagManager(this);
         localeManager = new LocaleManager(this);
         commandRegistrar = new CommandRegistrar(this);
+        banManager = new BanManager(this);
+        warpManager = new WarpManager(this);
 
         Bukkit.getPluginManager().registerEvents(new ConnectionListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CommandListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new ResourcePackListener(), this);
 
     }
 
@@ -64,6 +67,8 @@ public final class Main extends JavaPlugin {
     public PlayerManager getPlayerManager() { return playerManager; }
     public NametagManager getNametagManager() {return nametagManager;}
     public LocaleManager locale() {return localeManager;}
+    public BanManager getBanManager() {return banManager;}
+    public WarpManager getWarpManager() {return warpManager;}
 
     public HashMap<UUID, PermissionAttachment> getPerms() {return perms;}
 }

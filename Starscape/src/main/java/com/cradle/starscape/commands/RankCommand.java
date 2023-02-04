@@ -30,7 +30,7 @@ public class RankCommand extends Command {
             Player player = (Player) sender;
             if (player.isOp()) {
                 if (args.length == 2) {
-                    if (Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
+                    if (main.getPlayerManager().getPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId()) != null) {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
 
                         for (Rank rank : Rank.values()) {

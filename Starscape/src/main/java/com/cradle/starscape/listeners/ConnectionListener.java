@@ -25,6 +25,8 @@ public class ConnectionListener implements Listener {
         PlayerDocument playerData = new PlayerDocument(main, uuid);
         main.getPlayerManager().addDocument(uuid, playerData);
 
+        // listen for bans here!
+
         main.getNametagManager().setNametags(player);
         main.getNametagManager().newTag(player);
         e.setJoinMessage(main.locale().msg("PLAYER_JOIN", player));
