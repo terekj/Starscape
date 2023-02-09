@@ -1,32 +1,66 @@
 package com.cradle.starscape.utils;
 
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Date;
+import java.util.UUID;
 
 public class PunishmentLog {
-    private String type;
+    private PunishmentType type;
     private String punisher;
-    private Date issueDate;
+    private long issueDate;
     private String reason;
-    private Date endDate;
+    private boolean pardonStatus;
+    private Long expiration;
 
-    public PunishmentLog(String type, Player punisher, Date issueDate, String reason, @Nullable Date endDate) {
+
+    public PunishmentLog(PunishmentType type, UUID punisher, String reason, Long expiration) {
         this.type = type;
-        this.punisher = punisher.getUniqueId().toString();
-        this.issueDate = issueDate;
+        this.punisher = punisher.toString();
+        this.issueDate = System.currentTimeMillis();
         this.reason = reason;
-        if (!type.equalsIgnoreCase("kick") && endDate != null) {
-            this.endDate = endDate;
+        this.pardonStatus = false;
+        if (type.equals(PunishmentType.KICK)) {
+            this.expiration = -1L;
+        } else {
+            this.expiration = expiration;
         }
     }
+    public PunishmentLog(PunishmentType type, UUID punisher, long issueDate, String reason, boolean pardonStatus, Long expiration) {
+        this.type = type;
+        this.punisher = punisher.toString();
+        this.issueDate = issueDate;
+        this.reason = reason;
+        this.pardonStatus = pardonStatus;
+        if (type.equals(PunishmentType.KICK)) {
+            this.expiration = -1L;
+        } else {
+            this.expiration = expiration;
+        }
+    }
+    public void pardon() {pardonStatus = true;}
+    public PunishmentType getType() {
+        return type;
+    }
+    public String getPunisher() {
+        return punisher;
+    }
+    public long getIssueDate() {
+        return issueDate;
+    }
+    public String getReason() { return reason; }
+    public boolean getPardonStatus() {
+        return pardonStatus;
+    }
+
+    public long getExpiration() {
+        return expiration;
+    }
+
+    public boolean isOver() {
+        return (expiration < System.currentTimeMillis() && expiration != -1L) || pardonStatus;
+    }
+
     @Override
     public String toString() {
-        if (!type.equalsIgnoreCase("kick") && endDate != null) {
-            return "{" + type + ": {punisher: \"" + punisher + "\", issued: \"" + issueDate.toString() + "\", reason: \"" + reason + "\", expires: \"" + endDate + "\"}}";
-        }
-        return "{" + type + ": {punisher: \"" + punisher + "\", issued: \"" + issueDate.toString() + "\", reason: \"" + reason + "\"}}";
+        return "{" + type + ": {punisher: \"" + punisher + "\", issued: \"" + issueDate + ", reason: \"" + reason + "\", pardonStatus: " + pardonStatus + ", expires: \"" + expiration + "}}";
     }
 
 }

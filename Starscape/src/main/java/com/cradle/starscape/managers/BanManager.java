@@ -46,10 +46,10 @@ public class BanManager {
     public boolean unbanPlayer(OfflinePlayer player, Player issuer, Date endDate) {
         if (isBanned(player)) {
             UUID uuid = player.getUniqueId();
-            bannedUsers.remove(uuid);
-            bans.set(uuid + ".expires", null);
-            PunishmentLog log = new PunishmentLog("UNBAN", issuer, new Date(), "-", null);
-            main.getPlayerManager().getPlayer(uuid).addToHistory(log);
+          //  bannedUsers.remove(uuid);
+         //  bans.set(uuid + ".expires", null);
+           // PunishmentLog log = new PunishmentLog("UNBAN", issuer, new Date(), "-", null);
+         //   main.getPlayerManager().getPlayer(uuid).addToHistory(log);
             return true;
         }
         return false;

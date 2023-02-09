@@ -29,14 +29,7 @@ public class PunishCommand extends Command {
             return;
         }
         Player player = (Player) sender;
-        /*
-            /punish help
-            /punish kick <player> <reason>
-            /punish mute <player> <reason> [timespan]
-            /punish ban <player> <reason> [timespan]
-            /punish unmute <player>
-            /punish unban <player>
-         */
+
         if (args.length == 0) {
             player.performCommand("punish help");
             return;
@@ -61,7 +54,6 @@ public class PunishCommand extends Command {
             player.sendMessage(main.locale().msg("PUNISH_MISSING_REASON"));
             return;
         }
-
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 /*

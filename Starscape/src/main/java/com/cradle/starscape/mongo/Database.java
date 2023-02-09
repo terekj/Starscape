@@ -1,4 +1,4 @@
-package com.cradle.starscape;
+package com.cradle.starscape.mongo;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;

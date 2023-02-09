@@ -1,7 +1,9 @@
 package com.cradle.starscape;
 
+import com.cradle.starscape.mongo.MongoAdapter;
 import com.cradle.starscape.utils.ColorCode;
 import com.cradle.starscape.utils.PunishmentLog;
+import com.cradle.starscape.utils.PunishmentType;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
@@ -10,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PlayerDocument {
 
@@ -25,9 +29,7 @@ public class PlayerDocument {
     private int level;
     private double balance;
 
-    private ArrayList<String> banInfo;
-    private ArrayList<String> muteInfo;
-    private ArrayList<String> punishmentHistory;
+    private ArrayList<PunishmentLog> punishments;
 
     public PlayerDocument(Main main, UUID uuid) {
         this.main = main;
@@ -46,15 +48,23 @@ public class PlayerDocument {
             level = document.getInteger("level");
             balance = document.getDouble("balance");
 
-            banInfo = (ArrayList<String>) document.getList("banInfo", String.class);
-            muteInfo = (ArrayList<String>) document.getList("muteInfo", String.class);
-            punishmentHistory = (ArrayList<String>) document.getList("punishmentHistory", String.class);
+            List<Document> serializedPunishments = document.getList("punishments", Document.class);
+            ArrayList<PunishmentLog> deserializedPunishments = new ArrayList<>();
+            serializedPunishments.forEach( e -> {
+                deserializedPunishments.add((PunishmentLog) MongoAdapter.deserialize(e));
+            });
+            punishments = deserializedPunishments;
+
         } else {
+            nickname = null;
             rank = "DEFAULT";
+            titles = new ArrayList<>();
 
             xp = 0;
             level = 0;
             balance = 0;
+
+            punishments = new ArrayList<>();
             Document newDocument = new Document()
                     .append("uuid", uuid)
                     .append("dateJoined", new Date())
@@ -67,15 +77,12 @@ public class PlayerDocument {
                     .append("level", level)
                     .append("balance", balance)
 
-                    .append("banInfo", new ArrayList<String>())
-                    .append("muteInfo", new ArrayList<String>())
-                    .append("punishmentHistory", new ArrayList<String>());
+                    .append("punishments", new ArrayList<String>());
 
             document = newDocument;
             main.getDatabase().getPlayers().insertOne(newDocument);
         }
     }
-
     public void setNickname(String nickname) {
         this.nickname = nickname;
         Document update = new Document("$set", new Document().append("nickname", nickname));
@@ -157,15 +164,6 @@ public class PlayerDocument {
         main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
     }
 
-    public void addToHistory(PunishmentLog punishment) {
-        punishmentHistory.add(punishment.toString());
-        Document update = new Document(
-                "$push",
-                new Document().append("punishmentHistory", punishment.toString())
-        );
-        main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
-    }
-
     public String getNickname() {
         return nickname;
     }
@@ -224,8 +222,32 @@ public class PlayerDocument {
     public double getBalance() {
         return balance;
     }
-    public List<String> getHistory() {
-        return punishmentHistory;
+    public void addPunishment(PunishmentLog punishment) {
+        punishments.add(punishment);
+        Document update = new Document(
+                "$push",
+                new Document().append("punishments", MongoAdapter.serialize(punishment))
+        );
+        main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
+    }
+    public void pardonBan() {
+
+        PunishmentLog punishment = getActivePunishments().stream().filter(c -> c.getType().equals(PunishmentType.BAN)).findFirst().orElse(null);
+        punishment.pardon();
+
+        List<Document> updatedPunishments = punishments.stream().map(e -> (Document) MongoAdapter.serialize(e)).collect(Collectors.toList());
+
+        Document update = new Document(
+                "$set",
+                new Document().append("punishments", updatedPunishments)
+        );
+        main.getDatabase().getPlayers().updateOne(Filters.eq("uuid", uuid), update);
+    }
+    public List<PunishmentLog> getAllPunishments() {
+        return new ArrayList<>(punishments);
+    }
+    public List<PunishmentLog> getActivePunishments() {
+        return punishments.stream().filter(log -> !log.isOver()).collect(Collectors.toList());
     }
 
     public Document getDocument() {

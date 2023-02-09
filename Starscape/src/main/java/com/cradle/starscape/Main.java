@@ -5,6 +5,8 @@ import com.cradle.starscape.listeners.CommandListener;
 import com.cradle.starscape.listeners.ConnectionListener;
 import com.cradle.starscape.listeners.ResourcePackListener;
 import com.cradle.starscape.managers.*;
+import com.cradle.starscape.mongo.Database;
+import com.cradle.starscape.mongo.MongoAdapter;
 import com.mongodb.MongoException;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.PermissionAttachment;
@@ -39,6 +41,8 @@ public final class Main extends JavaPlugin {
         } catch (MongoException e) {
             e.printStackTrace();
         }
+
+        MongoAdapter.loadCodecs();
 
         playerManager = new PlayerManager(this);
         nametagManager = new NametagManager(this);
